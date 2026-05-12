@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="JurisFlow — automação sob medida para escritórios de advocacia." />
+    <title>JurisFlow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body class="{{ body_class|default('') }}">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-mark">JF</div>
+        <div>
+          <div class="brand">JurisFlow</div>
+          <div class="brand-sub">Automação jurídica sob medida</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/servicos">Soluções</a>
+        <a href="/diagnostico">Diagnóstico</a>
+        <a href="/lp/diagnostico">Landing 2</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/processos">Processos</a>
+        <a href="/processos/importar">Importar planilha</a>
+        <a href="/contato" class="nav-cta">Falar com a JurisFlow</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alerts">
+            {% for message in messages %}
+              <div class="alert">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      <div>
+        <strong>JurisFlow</strong>
+        <span>— automação sob medida para escritórios de advocacia.</span>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

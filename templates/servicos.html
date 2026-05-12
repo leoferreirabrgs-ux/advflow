@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-block compact-top">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Soluções</span>
+      <h1>Linhas de automação pensadas para a operação do escritório.</h1>
+    </div>
+    <p>Essas frentes podem ser vendidas separadamente ou combinadas em projetos maiores. O ponto central é simples: reduzir trabalho manual e aumentar previsibilidade.</p>
+  </div>
+</section>
+
+<div class="grid two">
+  {% for item in servicos %}
+    <article class="panel service-card">
+      <span class="service-badge">{{ item.nome }}</span>
+      <p class="service-summary">{{ item.resumo }}</p>
+      <p class="service-result">{{ item.resultado }}</p>
+      <ul>
+        {% for point in item.impacto %}
+          <li>{{ point }}</li>
+        {% endfor %}
+      </ul>
+      <p class="service-cta">{{ item.gancho }}</p>
+    </article>
+  {% endfor %}
+</div>
+
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Formatos de contratação</span>
+      <h2>Você pode começar pequeno e evoluir com segurança.</h2>
+    </div>
+  </div>
+  <div class="grid three">
+    {% for item in pacotes %}
+      <article class="panel package-card">
+        <div class="package-title">{{ item.nome }}</div>
+        <p>{{ item.descricao }}</p>
+        <span>{{ item.ideal }}</span>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

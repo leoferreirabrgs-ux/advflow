@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Sincronizar planilha</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="/dashboard">Painel de controle</a>
+      <a href="/processos">Processos</a>
+      <a class="active" href="/processos/importar">Sincronizar planilha</a>
+      <a href="/diagnostico">Captação</a>
+    </nav>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="dashboard-header compact">
+      <div>
+        <div class="eyebrow dashboard-eyebrow">Integração com planilha</div>
+        <h1>Importar processos do escritório</h1>
+        <p>Envie um CSV exportado da planilha e o sistema cria ou atualiza a base automaticamente.</p>
+        <p class="muted">Modelo pronto para teste: <code>/mnt/c/Users/leona/OneDrive/Área de Trabalho/Projetos/JurisFlow/data/processos_exemplo.csv</code></p>
+      </div>
+    </header>
+
+    <section class="content-grid">
+      <article class="dash-panel">
+        <h2>Upload do arquivo</h2>
+        <form method="post" enctype="multipart/form-data" class="upload-form">
+          <label class="field">
+            <span>Arquivo CSV</span>
+            <input type="file" name="arquivo" accept=".csv,.txt" required />
+          </label>
+          <button class="btn primary" type="submit">Sincronizar agora</button>
+        </form>
+      </article>
+
+      <article class="dash-panel">
+        <h2>Colunas aceitas</h2>
+        <ul class="check-list">
+          <li>numero_processo / processo / numero</li>
+          <li>cliente / nome_cliente</li>
+          <li>tribunal / foro / vara</li>
+          <li>area / area_juridica</li>
+          <li>status / fase / situacao</li>
+          <li>responsavel / advogado</li>
+          <li>ultima_movimentacao / atualizado_em</li>
+        </ul>
+      </article>
+    </section>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Histórico do processo</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="/dashboard">Painel de controle</a>
+      <a href="/processos">Processos</a>
+      <a href="/processos/importar">Sincronizar planilha</a>
+    </nav>
+  </aside>
+
+  <div class="dashboard-main">
+    {% if processo %}
+      <header class="dashboard-header compact">
+        <div>
+          <div class="eyebrow dashboard-eyebrow">Detalhe do processo</div>
+          <h1>{{ processo.numero }}</h1>
+          <p>{{ processo.cliente }} · {{ processo.tribunal or 'Sem tribunal' }} · {{ processo.area or 'Sem área' }}</p>
+        </div>
+        <div class="dashboard-actions">
+          <span class="status-chip status-{{ processo.status|lower|replace(' ', '-') }}">{{ processo.status }}</span>
+        </div>
+      </header>
+
+      <section class="metric-grid compact">
+        <article class="metric-card">
+          <span>Responsável</span>
+          <strong>{{ processo.responsavel or '—' }}</strong>
+        </article>
+        <article class="metric-card">
+          <span>Fonte</span>
+          <strong>{{ processo.fonte or '—' }}</strong>
+        </article>
+        <article class="metric-card">
+          <span>Última atualização</span>
+          <strong>{{ processo.updated_at or processo.ultima_movimentacao or processo.created_at or '—' }}</strong>
+        </article>
+      </section>
+
+      <article class="dash-panel table-panel full-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Histórico</span>
+            <h2>Linha do tempo</h2>
+          </div>
+        </div>
+        <div class="timeline-list">
+          {% for item in events %}
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>{{ item.titulo }}</strong>
+                <p>{{ item.descricao }}</p>
+                <small>{{ item.timestamp }} · {{ item.origem or 'fonte' }}</small>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    {% else %}
+      <article class="dash-panel empty-state">
+        <h1>Processo não encontrado</h1>
+        <p>O processo solicitado não existe na base atual.</p>
+        <a class="btn primary" href="/processos">Voltar para a lista</a>
+      </article>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

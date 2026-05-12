@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-block compact-top">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Diagnóstico</span>
+      <h1>Entenda a operação antes de propor a automação.</h1>
+    </div>
+    <p>Este formulário foi pensado para captar leads com menos atrito e já organizar as informações que importam para a primeira conversa.</p>
+  </div>
+</section>
+
+<section class="grid two form-layout">
+  <article class="panel">
+    <h2>O que vamos mapear</h2>
+    <ul class="check-list">
+      <li>onde o escritório perde mais tempo</li>
+      <li>quais sistemas já fazem parte da rotina</li>
+      <li>qual frente faz mais sentido começar</li>
+      <li>que resultado o cliente espera no curto prazo</li>
+    </ul>
+    <p class="muted">Depois do envio, você já terá uma base organizada para montar a proposta e priorizar a solução certa.</p>
+  </article>
+
+  <article class="panel">
+    <form method="post" class="diagnostic-form">
+      <div class="grid two form-grid">
+        <label class="field">
+          <span>Nome *</span>
+          <input type="text" name="nome" value="{{ request.form.get('nome', '') }}" required />
+        </label>
+        <label class="field">
+          <span>Escritório *</span>
+          <input type="text" name="escritorio" value="{{ request.form.get('escritorio', '') }}" required />
+        </label>
+        <label class="field">
+          <span>Cargo / função</span>
+          <input type="text" name="cargo" value="{{ request.form.get('cargo', '') }}" placeholder="Sócio, advogado, coordenador..." />
+        </label>
+        <label class="field">
+          <span>E-mail *</span>
+          <input type="email" name="email" value="{{ request.form.get('email', '') }}" required />
+        </label>
+        <label class="field">
+          <span>WhatsApp *</span>
+          <input type="tel" name="whatsapp" value="{{ request.form.get('whatsapp', '') }}" required />
+        </label>
+        <label class="field">
+          <span>Cidade / Estado</span>
+          <input type="text" name="cidade_estado" value="{{ request.form.get('cidade_estado', '') }}" />
+        </label>
+        <label class="field">
+          <span>Área principal</span>
+          <input type="text" name="area" value="{{ request.form.get('area', '') }}" placeholder="Cível, trabalhista, previdenciário..." />
+        </label>
+        <label class="field">
+          <span>Porte do escritório</span>
+          <select name="porte">
+            <option value="">Selecione</option>
+            {% for item in form_options.porte %}
+              <option value="{{ item }}" {% if request.form.get('porte') == item %}selected{% endif %}>{{ item }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label class="field">
+          <span>Volume médio de casos</span>
+          <select name="volume">
+            <option value="">Selecione</option>
+            {% for item in form_options.volume %}
+              <option value="{{ item }}" {% if request.form.get('volume') == item %}selected{% endif %}>{{ item }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label class="field full">
+          <span>Objetivo principal</span>
+          <select name="objetivo">
+            <option value="">Selecione</option>
+            {% for item in form_options.objetivo %}
+              <option value="{{ item }}" {% if request.form.get('objetivo') == item %}selected{% endif %}>{{ item }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label class="field full">
+          <span>Qual frente faz mais sentido começar?</span>
+          <select name="prioridade">
+            <option value="">Selecione</option>
+            {% for item in form_options.prioridade %}
+              <option value="{{ item }}" {% if request.form.get('prioridade') == item %}selected{% endif %}>{{ item }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+
+      <fieldset class="field full">
+        <legend>Sistemas que o escritório já usa</legend>
+        <div class="choice-row">
+          {% for item in sistemas %}
+            <label class="choice-pill">
+              <input type="checkbox" name="sistemas" value="{{ item }}" {% if item in request.form.getlist('sistemas') %}checked{% endif %} />
+              <span>{{ item }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <label class="field full">
+        <span>Principal gargalo *</span>
+        <textarea name="principal_gargalo" rows="4" required placeholder="Ex.: confere manualmente os portais, perde tempo com documento, atende cliente repetidamente..."></textarea>
+      </label>
+
+      <label class="field full">
+        <span>Observações adicionais</span>
+        <textarea name="observacoes" rows="4" placeholder="Conte o que achar relevante sobre a rotina do escritório."></textarea>
+      </label>
+
+      <label class="consent">
+        <input type="checkbox" name="consentimento" value="sim" required />
+        <span>Concordo em compartilhar essas informações para receber contato da JurisFlow.</span>
+      </label>
+
+      <button class="btn primary" type="submit">Enviar diagnóstico</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

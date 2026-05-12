@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Lista de processos</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="/dashboard">Painel de controle</a>
+      <a class="active" href="/processos">Processos</a>
+      <a href="/processos/importar">Sincronizar planilha</a>
+      <a href="/diagnostico">Captação</a>
+    </nav>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="dashboard-header compact">
+      <div>
+        <div class="eyebrow dashboard-eyebrow">Processos</div>
+        <h1>Todos os processos sincronizados</h1>
+        <p>Visualize a fila completa e clique em qualquer número para abrir o histórico individual.</p>
+      </div>
+      <div class="dashboard-actions">
+        <a class="btn secondary" href="/processos/importar">Sincronizar planilha</a>
+        <a class="btn primary" href="/dashboard">Ir para dashboard</a>
+      </div>
+    </header>
+
+    <section class="metric-grid compact">
+      <article class="metric-card">
+        <span>Processos</span>
+        <strong>{{ stats.total }}</strong>
+      </article>
+      <article class="metric-card">
+        <span>Em análise</span>
+        <strong>{{ stats.em_analise }}</strong>
+      </article>
+      <article class="metric-card">
+        <span>Aguardando</span>
+        <strong>{{ stats.aguardando }}</strong>
+      </article>
+      <article class="metric-card">
+        <span>Arquivados</span>
+        <strong>{{ stats.arquivados }}</strong>
+      </article>
+    </section>
+
+    <article class="dash-panel table-panel full-panel">
+      <div class="panel-head">
+        <div>
+          <span class="section-kicker">Base completa</span>
+          <h2>Fila de processos</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Cliente</th>
+              <th>Tribunal</th>
+              <th>Área</th>
+              <th>Status</th>
+              <th>Responsável</th>
+              <th>Última atualização</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in all_processos %}
+              <tr>
+                <td><a href="/processos/{{ item.id }}">{{ item.numero }}</a></td>
+                <td>{{ item.cliente }}</td>
+                <td>{{ item.tribunal or '—' }}</td>
+                <td>{{ item.area or '—' }}</td>
+                <td><span class="status-chip status-{{ item.status|lower|replace(' ', '-') }}">{{ item.status }}</span></td>
+                <td>{{ item.responsavel or '—' }}</td>
+                <td>{{ item.updated_at or item.ultima_movimentacao or item.created_at or '—' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}

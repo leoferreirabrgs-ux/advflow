@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-surface">
+  <div class="hero-copy">
+    <div class="eyebrow">{{ landing.eyebrow }}</div>
+    <h1>{{ landing.headline }}</h1>
+    <p class="lead">{{ landing.lead }}</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="{{ landing.cta_href }}">{{ landing.primary_cta }}</a>
+      <a class="btn secondary" href="/servicos">{{ landing.secondary_cta }}</a>
+    </div>
+    <div class="trust-row">
+      {% for item in landing.trust %}
+        <span>{{ item }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  <aside class="hero-card">
+    <div class="mini-label">Por que essa página existe</div>
+    <div class="hero-metrics">
+      {% for item in landing.hero_points %}
+        <div>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </aside>
+</section>
+
+{% for section in landing.sections %}
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">{{ section.kicker }}</span>
+      <h2>{{ section.title }}</h2>
+    </div>
+    <p>{{ section.description }}</p>
+  </div>
+
+  <div class="grid {% if section.cards|length > 2 %}three{% else %}two{% endif %}">
+    {% for item in section.cards %}
+      <article class="panel {% if section.type == 'servicos' %}service-card{% elif section.type == 'pacotes' %}package-card{% else %}step-card{% endif %}">
+        {% if section.type == 'servicos' %}
+          <div class="service-top">
+            <span class="service-badge">{{ item.nome }}</span>
+          </div>
+          <p class="service-summary">{{ item.resumo }}</p>
+          <p class="service-result">{{ item.resultado }}</p>
+          <ul>
+            {% for point in item.impacto %}
+              <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+          <p class="service-cta">{{ item.gancho }}</p>
+        {% elif section.type == 'pacotes' %}
+          <div class="package-title">{{ item.nome }}</div>
+          <p>{{ item.descricao }}</p>
+          <span>{{ item.ideal }}</span>
+        {% else %}
+          <div class="step-index">0{{ loop.index }}</div>
+          <h3>{{ item.titulo }}</h3>
+          <p>{{ item.texto }}</p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+
+<section class="cta-band">
+  <div>
+    <span class="section-kicker">Próximo passo</span>
+    <h2>{{ landing.cta_title }}</h2>
+    <p>{{ landing.cta_text }}</p>
+  </div>
+  <a class="btn primary" href="{{ landing.cta_href }}">{{ landing.cta_label }}</a>
+</section>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Painel do escritório</div>
+      </div>
+    </div>
+
+    <div class="sidebar-search">Pesquisar processos</div>
+
+    <nav class="sidebar-nav">
+      <a class="active" href="/dashboard">Painel de controle</a>
+      <a href="/processos">Processos</a>
+      <a href="/processos/importar">Sincronizar planilha</a>
+      <a href="/diagnostico">Captação</a>
+      <a href="/">Landing institucional</a>
+    </nav>
+
+    <div class="sidebar-note">
+      <strong>{{ stats.total }}</strong>
+      <span>processos na base</span>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div>
+        <div class="eyebrow dashboard-eyebrow">Painel do escritório</div>
+        <h1>Dashboard operacional</h1>
+        <p>Visão central dos processos sincronizados da planilha e das atualizações recebidas da fonte.</p>
+      </div>
+      <div class="dashboard-actions">
+        <a class="btn secondary" href="/processos/importar">Sincronizar planilha</a>
+        <a class="btn primary" href="/processos">Ver todos os processos</a>
+      </div>
+    </header>
+
+    <section class="metric-grid">
+      <article class="metric-card accent-green">
+        <span>Total de processos</span>
+        <strong>{{ stats.total }}</strong>
+        <small>base atual integrada</small>
+      </article>
+      <article class="metric-card accent-blue">
+        <span>Clientes / casos</span>
+        <strong>{{ stats.clientes }}</strong>
+        <small>identificados na planilha</small>
+      </article>
+      <article class="metric-card accent-amber">
+        <span>Em análise</span>
+        <strong>{{ stats.em_analise }}</strong>
+        <small>fila ativa do escritório</small>
+      </article>
+      <article class="metric-card accent-violet">
+        <span>Atualizados</span>
+        <strong>{{ stats.atualizados }}</strong>
+        <small>movimentações recentes</small>
+      </article>
+    </section>
+
+    <section class="insight-grid">
+      {% for item in insights %}
+        <article class="insight-card">
+          <span>{{ item.title }}</span>
+          <strong>{{ item.value }}</strong>
+          <small>{{ item.hint }}</small>
+        </article>
+      {% endfor %}
+    </section>
+
+    <section class="chart-grid">
+      <article class="dash-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Distribuição</span>
+            <h2>Processos por status</h2>
+          </div>
+        </div>
+        <div class="bar-chart">
+          {% for item in status_series %}
+            <div class="bar-column">
+              <div class="bar-count">{{ item.value }}</div>
+              <div class="bar-track"><span style="height: {{ item.height }}%; background: {{ item.color }}"></span></div>
+              <div class="bar-label">{{ item.label }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+
+      <article class="dash-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Tendência</span>
+            <h2>Atualizações dos últimos 6 meses</h2>
+          </div>
+        </div>
+        <div class="bar-chart months-chart">
+          {% for item in activity_series %}
+            <div class="bar-column">
+              <div class="bar-count">{{ item.value }}</div>
+              <div class="bar-track"><span style="height: {{ item.height }}%"></span></div>
+              <div class="bar-label">{{ item.label }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="dash-panel table-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Fila ativa</span>
+            <h2>Processos para acompanhar agora</h2>
+          </div>
+          <a href="/processos">Abrir lista completa</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Responsável</th>
+                <th>Última atualização</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in processos %}
+                <tr>
+                  <td><a href="/processos/{{ item.id }}">{{ item.numero }}</a></td>
+                  <td>{{ item.cliente }}</td>
+                  <td><span class="status-chip status-{{ item.status|lower|replace(' ', '-') }}">{{ item.status }}</span></td>
+                  <td>{{ item.responsavel or '—' }}</td>
+                  <td>{{ item.updated_at or item.ultima_movimentacao or item.created_at or '—' }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-panel timeline-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Histórico</span>
+            <h2>Últimos eventos recebidos</h2>
+          </div>
+        </div>
+        <div class="timeline-list">
+          {% for item in recent_events %}
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>{{ item.titulo }}</strong>
+                <p>{{ item.numero }} · {{ item.descricao }}</p>
+                <small>{{ item.timestamp }} · {{ item.origem or item.processo_status }}</small>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    </section>
+  </div>
+</section>
+{% endblock %}

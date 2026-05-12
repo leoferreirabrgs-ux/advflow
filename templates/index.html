@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-surface">
+  <div class="hero-copy">
+    <div class="eyebrow">Automação jurídica para operação real</div>
+    <h1>Rotinas jurídicas que se movem com mais velocidade, padrão e controle.</h1>
+    <p class="lead">{{ proposta }}</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="/diagnostico">Solicitar diagnóstico</a>
+      <a class="btn secondary" href="/servicos">Conhecer as soluções</a>
+    </div>
+    <div class="trust-row">
+      <span>CNPJ ativo</span>
+      <span>Atendimento a escritórios</span>
+      <span>Implantação sob medida</span>
+      <span>Foco em redução de retrabalho</span>
+    </div>
+  </div>
+  <aside class="hero-card">
+    <div class="mini-label">O que o escritório ganha</div>
+    <div class="hero-metrics">
+      <div>
+        <strong>Menos manual</strong>
+        <p>Processos que deixam de depender de conferência repetitiva.</p>
+      </div>
+      <div>
+        <strong>Mais organização</strong>
+        <p>Documentos, tarefas e status centralizados em um fluxo único.</p>
+      </div>
+      <div>
+        <strong>Mais percepção de valor</strong>
+        <p>O cliente percebe resposta, clareza e consistência no atendimento.</p>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Como a JurisFlow trabalha</span>
+      <h2>Uma operação de automação pensada para escritórios de advocacia.</h2>
+    </div>
+    <p>Começamos pela dor que mais trava a operação e avançamos em blocos que podem ser implantados de forma independente.</p>
+  </div>
+  <div class="grid three">
+    {% for item in processo %}
+      <article class="panel step-card">
+        <div class="step-index">0{{ loop.index }}</div>
+        <h3>{{ item.titulo }}</h3>
+        <p>{{ item.texto }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Frentes de atuação</span>
+      <h2>O que entregamos para organizar a operação do escritório.</h2>
+    </div>
+    <p>Sem linguagem genérica. Cada frente está ligada a um ganho operacional claro e a um tipo de decisão comercial.</p>
+  </div>
+  <div class="grid two">
+    {% for item in servicos %}
+      <article class="panel service-card">
+        <div class="service-top">
+          <span class="service-badge">{{ item.nome }}</span>
+        </div>
+        <p class="service-summary">{{ item.resumo }}</p>
+        <p class="service-result">{{ item.resultado }}</p>
+        <ul>
+          {% for point in item.impacto %}
+            <li>{{ point }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Mensagens que abrem conversa</span>
+      <h2>Sinais de que o escritório já está pronto para automatizar.</h2>
+    </div>
+    <p>Esses ganchos podem virar anúncios, criativos, headlines ou abordagem comercial. Eles falam de problema real, não de tecnologia pela tecnologia.</p>
+  </div>
+  <div class="grid three">
+    {% for item in ganchos %}
+      <article class="panel signal-card">
+        <h3>{{ item.titulo }}</h3>
+        <p>{{ item.texto }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Formatos de contratação</span>
+      <h2>Modelos simples para entrar, gerar valor e continuar evoluindo.</h2>
+    </div>
+    <p>Você não precisa vender tudo de uma vez. O cliente pode começar com clareza e avançar conforme a maturidade da operação.</p>
+  </div>
+  <div class="grid three">
+    {% for item in pacotes %}
+      <article class="panel package-card">
+        <div class="package-title">{{ item.nome }}</div>
+        <p>{{ item.descricao }}</p>
+        <span>{{ item.ideal }}</span>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="cta-band">
+  <div>
+    <span class="section-kicker">Próximo passo</span>
+    <h2>Se o escritório ainda depende de muita conferência manual, a JurisFlow começa pelo diagnóstico.</h2>
+    <p>Assim você entende a operação antes de vender a solução — e a proposta fica mais convincente para o cliente.</p>
+  </div>
+  <a class="btn primary" href="/diagnostico">Montar diagnóstico</a>
+</section>
+{% endblock %}
