@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="cliente-shell">
+  <div class="dashboard-header compact cliente-hero">
+    <div>
+      <div class="eyebrow dashboard-eyebrow">Área do cliente</div>
+      <h1>Página do cliente</h1>
+      <p>O acesso é individual. Você cria o usuário e a senha do cliente, entrega as credenciais, e ele entra só no próprio portal.</p>
+    </div>
+  </div>
+
+  {% if current_user %}
+    <section class="dash-panel cliente-login-card">
+      <span class="section-kicker">Acesso autorizado</span>
+      <h3>Olá, {{ current_user.display_name }}</h3>
+      <p>Seu login está ativo. A partir daqui você entra no dashboard, processos, histórico, insights e importação da própria base.</p>
+      <div class="cliente-actions">
+        <a class="btn primary" href="/dashboard">Painel de controle</a>
+        <a class="btn secondary" href="/processos">Processos</a>
+        <a class="btn secondary" href="/historico">Histórico</a>
+        <a class="btn secondary" href="/insights">Insights</a>
+        <a class="btn secondary" href="/processos/importar">Sincronizar planilha</a>
+        <a class="btn secondary" href="/logout">Sair</a>
+      </div>
+    </section>
+  {% else %}
+    <section class="cliente-auth-grid">
+      <article class="dash-panel cliente-card cliente-login-card">
+        <span class="section-kicker">Login do cliente</span>
+        <h3>Entre com seu usuário e senha</h3>
+        <p>Você receberá as credenciais prontas. Depois do primeiro acesso, o cliente pode trocar a senha se quiser.</p>
+        <form class="login-form" method="post" action="/login">
+          <input type="hidden" name="next" value="{{ next_url }}" />
+          <label class="field">
+            <span>Usuário</span>
+            <input type="text" name="username" placeholder="FabricioDias" required />
+          </label>
+          <label class="field">
+            <span>Senha</span>
+            <input type="password" name="password" placeholder="••••••••" required />
+          </label>
+          <button class="btn primary" type="submit">Entrar</button>
+        </form>
+      </article>
+
+      <article class="dash-panel cliente-card">
+        <span class="section-kicker">Como funciona para o cliente</span>
+        <h3>Seu acesso é individual e simples</h3>
+        <ul class="check-list">
+          <li>você recebe seu usuário e senha inicial</li>
+          <li>entra no portal e vê apenas o seu espaço</li>
+          <li>consulta dashboard, processos e atualizações</li>
+          <li>pode trocar a senha depois, se quiser</li>
+        </ul>
+        <p class="muted">Depois do login, o portal libera apenas o ambiente daquele cliente.</p>
+      </article>
+    </section>
+  {% endif %}
+</section>
+{% endblock %}

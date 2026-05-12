@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Insights do cliente</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="/dashboard">Painel de controle</a>
+      <a href="/processos">Processos</a>
+      <a href="/historico">Histórico</a>
+      <a class="active" href="/insights">Insights</a>
+      <a href="/processos/importar">Sincronizar planilha</a>
+      <a href="/logout">Sair</a>
+    </nav>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="dashboard-header compact">
+      <div>
+        <div class="eyebrow dashboard-eyebrow">Insights da operação</div>
+        <h1>Painel de leitura inteligente</h1>
+        <p>Resumo dos números integrados do cliente, com leitura rápida por status, área, advogado e eventos recentes.</p>
+      </div>
+      <div class="dashboard-actions">
+        <a class="btn primary" href="/dashboard">Painel de controle</a>
+        <a class="btn secondary" href="/processos">Processos</a>
+        <a class="btn secondary" href="/historico">Histórico</a>
+        <a class="btn secondary" href="/logout">Sair</a>
+      </div>
+    </header>
+
+    <section class="metric-grid">
+      <article class="metric-card accent-green">
+        <span>Total de processos</span>
+        <strong>{{ stats.total }}</strong>
+        <small>base atual integrada</small>
+      </article>
+      <article class="metric-card accent-blue">
+        <span>Clientes / casos</span>
+        <strong>{{ stats.clientes }}</strong>
+        <small>identificados na planilha</small>
+      </article>
+      <article class="metric-card accent-amber">
+        <span>Em análise</span>
+        <strong>{{ stats.em_analise }}</strong>
+        <small>fila ativa do escritório</small>
+      </article>
+      <article class="metric-card accent-violet">
+        <span>Atualizados</span>
+        <strong>{{ stats.atualizados }}</strong>
+        <small>movimentações recentes</small>
+      </article>
+    </section>
+
+    <section class="insight-grid">
+      {% for item in insights %}
+        <article class="insight-card">
+          <span>{{ item.title }}</span>
+          <strong>{{ item.value }}</strong>
+          <small>{{ item.hint }}</small>
+        </article>
+      {% endfor %}
+    </section>
+
+    <section class="content-grid full-panel">
+      <article class="dash-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Últimos eventos</span>
+            <h2>Movimentações recebidas</h2>
+          </div>
+        </div>
+        <div class="timeline-list timeline-list-large">
+          {% for event in recent_events %}
+            <article class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>{{ event.numero }}</strong>
+                <p>{{ event.cliente }} · {{ event.processo_status }} · {{ event.timestamp }}</p>
+                <span>{{ event.descricao }}</span>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </article>
+
+      <article class="dash-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Leituras rápidas</span>
+            <h2>Resumo executivo</h2>
+          </div>
+        </div>
+        <ul class="check-list">
+          <li>{{ stats.em_analise }} processos precisam de leitura ativa.</li>
+          <li>{{ stats.atualizados }} processos já tiveram movimentação recente.</li>
+          <li>{{ stats.aguardando }} casos dependem de retorno externo.</li>
+          <li>{{ stats.arquivados }} processos já saíram da fila ativa.</li>
+        </ul>
+      </article>
+    </section>
+  </div>
+</section>
+{% endblock %}

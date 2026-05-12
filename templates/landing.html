@@ -4,7 +4,15 @@
 <section class="hero-surface">
   <div class="hero-copy">
     <div class="eyebrow">{{ landing.eyebrow }}</div>
-    <h1>{{ landing.headline }}</h1>
+    <h1>
+      {% if landing.headline_lines %}
+        {% for line in landing.headline_lines %}
+          <span class="headline-line">{{ line }}</span>
+        {% endfor %}
+      {% else %}
+        {{ landing.headline }}
+      {% endif %}
+    </h1>
     <p class="lead">{{ landing.lead }}</p>
     <div class="hero-actions">
       <a class="btn primary" href="{{ landing.cta_href }}">{{ landing.primary_cta }}</a>
@@ -72,7 +80,15 @@
 <section class="cta-band">
   <div>
     <span class="section-kicker">Próximo passo</span>
-    <h2>{{ landing.cta_title }}</h2>
+    <h2>
+      {% if landing.cta_title_lines %}
+        {% for line in landing.cta_title_lines %}
+          <span class="headline-line">{{ line }}</span>
+        {% endfor %}
+      {% else %}
+        {{ landing.cta_title }}
+      {% endif %}
+    </h2>
     <p>{{ landing.cta_text }}</p>
   </div>
   <a class="btn primary" href="{{ landing.cta_href }}">{{ landing.cta_label }}</a>

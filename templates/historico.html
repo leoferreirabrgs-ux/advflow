@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Últimos eventos</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="/dashboard">Painel de controle</a>
+      <a href="/processos">Processos</a>
+      <a class="active" href="/historico">Histórico</a>
+      <a href="/insights">Insights</a>
+      <a href="/processos/importar">Sincronizar planilha</a>
+      <a href="/logout">Sair</a>
+    </nav>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="dashboard-header compact">
+      <div>
+        <div class="eyebrow dashboard-eyebrow">Histórico</div>
+        <h1>Últimos eventos recebidos</h1>
+      </div>
+      <div class="dashboard-actions">
+        <a class="btn primary" href="/dashboard">Painel de controle</a>
+        <a class="btn secondary" href="/insights">Insights</a>
+        <a class="btn secondary" href="/processos">Processos</a>
+        <a class="btn secondary" href="/logout">Sair</a>
+      </div>
+    </header>
+
+    <section class="metric-grid history-metric-grid">
+      <article class="metric-card accent-green">
+        <span>Eventos exibidos</span>
+        <strong>{{ stats.total }}</strong>
+        <small>últimos registros recebidos</small>
+      </article>
+      <article class="metric-card accent-blue">
+        <span>Último evento</span>
+        <strong>{{ stats.latest or '—' }}</strong>
+        <small>timestamp mais recente</small>
+      </article>
+    </section>
+
+    <article class="dash-panel history-panel">
+      <div class="timeline-list timeline-list-large">
+        {% for item in events %}
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div>
+              <strong>{{ item.titulo }}</strong>
+              <p>{{ item.numero }} · {{ item.descricao }}</p>
+              <small>{{ item.timestamp }} · {{ item.origem or item.processo_status }}</small>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}

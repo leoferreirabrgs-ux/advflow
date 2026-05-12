@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">JF</div>
+      <div>
+        <div class="brand">JurisFlow</div>
+        <div class="brand-sub">Insights do cliente</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="{{ 'active' if demo_tab == 'painel' else '' }}" href="/demonstracao">Painel de controle</a>
+      <a class="{{ 'active' if demo_tab == 'processos' else '' }}" href="/demonstracao/processos">Processos</a>
+      <a class="{{ 'active' if demo_tab == 'historico' else '' }}" href="/demonstracao/historico">Histórico</a>
+      <a class="{{ 'active' if demo_tab == 'insights' else '' }}" href="/demonstracao/insights">Insights</a>
+    </nav>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="dashboard-header compact">
+      <div>
+        <div class="eyebrow dashboard-eyebrow">{{ demo_tab_eyebrow }}</div>
+        <h1>{{ demo_tab_title }}</h1>
+        <p>{{ demo_tab_text }}</p>
+      </div>
+      <div class="dashboard-actions">
+        <a class="btn primary" href="/">Voltar à home</a>
+        <a class="btn secondary" href="/cliente">Abrir página do cliente</a>
+      </div>
+    </header>
+
+    {% if demo_tab == 'painel' %}
+      <section class="metric-grid demo-metric-grid">
+        <article class="metric-card accent-green">
+          <span>Total de processos</span>
+          <strong>{{ demo_summary.total }}</strong>
+          <small>base atual integrada</small>
+        </article>
+        <article class="metric-card accent-blue">
+          <span>Clientes / casos</span>
+          <strong>{{ demo_summary.clientes }}</strong>
+          <small>identificados na planilha</small>
+        </article>
+        <article class="metric-card accent-amber">
+          <span>Em análise</span>
+          <strong>{{ demo_summary.em_analise }}</strong>
+          <small>fila ativa do escritório</small>
+        </article>
+        <article class="metric-card accent-violet">
+          <span>Atualizados</span>
+          <strong>{{ demo_summary.atualizados }}</strong>
+          <small>movimentações recentes</small>
+        </article>
+      </section>
+
+      <section class="grid two demo-breakdown-grid">
+        <article class="dash-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Visão geral</span>
+              <h2>O que o cliente enxergaria</h2>
+            </div>
+          </div>
+          <ul class="check-list demo-check-list">
+            <li>17 processos simulados para apresentação comercial.</li>
+            <li>4 advogados distribuídos por áreas jurídicas diferentes.</li>
+            <li>4 tribunais/varas de referência na amostra.</li>
+            <li>1 movimentação recente e 1 caso aguardando retorno.</li>
+          </ul>
+        </article>
+
+        <article class="dash-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Resumo executivo</span>
+              <h2>Leitura rápida</h2>
+            </div>
+          </div>
+          <div class="breakdown-list">
+            {% for item in demo_summary.status_breakdown %}
+              <div class="breakdown-row">
+                <span>{{ item.label }}</span>
+                <strong>{{ item.count }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+      </section>
+
+    {% elif demo_tab == 'processos' %}
+      <section class="metric-grid demo-metric-grid">
+        <article class="metric-card accent-green">
+          <span>Total de processos</span>
+          <strong>{{ demo_summary.total }}</strong>
+          <small>base atual integrada</small>
+        </article>
+        <article class="metric-card accent-blue">
+          <span>Clientes / casos</span>
+          <strong>{{ demo_summary.clientes }}</strong>
+          <small>identificados na planilha</small>
+        </article>
+        <article class="metric-card accent-amber">
+          <span>Em análise</span>
+          <strong>{{ demo_summary.em_analise }}</strong>
+          <small>fila ativa do escritório</small>
+        </article>
+        <article class="metric-card accent-violet">
+          <span>Arquivados</span>
+          <strong>{{ demo_summary.arquivados }}</strong>
+          <small>já saíram da fila ativa</small>
+        </article>
+      </section>
+
+      <article class="dash-panel demo-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Tabela completa</span>
+            <h2>Campos da planilha e cruzamentos</h2>
+          </div>
+        </div>
+        <div class="table-wrap demo-table-wrap">
+          <table class="demo-table">
+            <thead>
+              <tr>
+                <th>Número do processo</th>
+                <th>Processo</th>
+                <th>Cliente</th>
+                <th>Tribunal / foro / vara</th>
+                <th>Área</th>
+                <th>Status / fase / situação</th>
+                <th>Responsável</th>
+                <th>Última movimentação / atualizado em</th>
+                <th>Insight</th>
+                <th>Cruzamento</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in demo_processos %}
+                <tr>
+                  <td>{{ item.numero_processo }}</td>
+                  <td>{{ item.processo }}</td>
+                  <td>{{ item.nome_cliente }}</td>
+                  <td>{{ item.tribunal }} · {{ item.foro }} · {{ item.vara }}</td>
+                  <td>{{ item.area_juridica }}</td>
+                  <td>{{ item.status }} · {{ item.fase }} · {{ item.situacao }}</td>
+                  <td>{{ item.advogado }}</td>
+                  <td>{{ item.ultima_movimentacao }} / {{ item.atualizado_em }}</td>
+                  <td>{{ item.insight }}</td>
+                  <td>{{ item.cruzamento }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+    {% elif demo_tab == 'historico' %}
+      <section class="metric-grid demo-metric-grid">
+        <article class="metric-card accent-green">
+          <span>Últimos eventos</span>
+          <strong>{{ demo_events|length }}</strong>
+          <small>movimentações simuladas</small>
+        </article>
+        <article class="metric-card accent-blue">
+          <span>Atualizados</span>
+          <strong>{{ demo_summary.atualizados }}</strong>
+          <small>com movimentação recente</small>
+        </article>
+        <article class="metric-card accent-amber">
+          <span>Aguardando</span>
+          <strong>{{ demo_summary.aguardando }}</strong>
+          <small>dependem de retorno externo</small>
+        </article>
+        <article class="metric-card accent-violet">
+          <span>Arquivados</span>
+          <strong>{{ demo_summary.arquivados }}</strong>
+          <small>fora da fila ativa</small>
+        </article>
+      </section>
+
+      <article class="dash-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Linha do tempo</span>
+            <h2>Histórico simulado</h2>
+          </div>
+        </div>
+        <div class="timeline-list timeline-list-large">
+          {% for event in demo_events %}
+            <article class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>{{ event.numero }}</strong>
+                <p>{{ event.cliente }} · {{ event.processo_status }} · {{ event.timestamp }}</p>
+                <span>{{ event.descricao }}</span>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </article>
+
+    {% elif demo_tab == 'insights' %}
+      <section class="metric-grid demo-metric-grid">
+        <article class="metric-card accent-green">
+          <span>Total de processos</span>
+          <strong>{{ demo_summary.total }}</strong>
+          <small>base atual integrada</small>
+        </article>
+        <article class="metric-card accent-blue">
+          <span>Clientes / casos</span>
+          <strong>{{ demo_summary.clientes }}</strong>
+          <small>identificados na planilha</small>
+        </article>
+        <article class="metric-card accent-amber">
+          <span>Advogados</span>
+          <strong>{{ demo_summary.advogados }}</strong>
+          <small>atuando na amostra</small>
+        </article>
+        <article class="metric-card accent-violet">
+          <span>Tribunais</span>
+          <strong>{{ demo_summary.tribunais }}</strong>
+          <small>variação da operação</small>
+        </article>
+      </section>
+
+      <section class="grid two demo-breakdown-grid">
+        <article class="dash-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Advogados em atuação</span>
+              <h2>Quem toca a operação</h2>
+            </div>
+          </div>
+          <div class="breakdown-list">
+            {% for item in demo_summary.lawyer_breakdown %}
+              <div class="breakdown-row stacked">
+                <div>
+                  <span>{{ item.label }}</span>
+                  <small>{{ item.hint }}</small>
+                </div>
+                <strong>{{ item.count }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+
+        <article class="dash-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Áreas jurídicas</span>
+              <h2>Distribuição da amostra</h2>
+            </div>
+          </div>
+          <div class="breakdown-list">
+            {% for item in demo_summary.area_breakdown %}
+              <div class="breakdown-row">
+                <span>{{ item.label }}</span>
+                <strong>{{ item.count }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+      </section>
+
+      <article class="dash-panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Cruzamentos rápidos</span>
+            <h2>Leituras que ajudam a vender</h2>
+          </div>
+        </div>
+        <ul class="check-list demo-check-list">
+          <li>{{ demo_summary.top_advogado }} concentra mais processos na amostra.</li>
+          <li>{{ demo_summary.top_area }} é a área com mais volume.</li>
+          <li>{{ demo_summary.top_tribunal }} aparece com maior recorrência.</li>
+          <li>{{ demo_summary.em_analise }} processos pedem leitura ativa hoje.</li>
+        </ul>
+      </article>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
